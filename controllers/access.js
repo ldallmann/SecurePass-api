@@ -20,7 +20,7 @@ export const getAccess = (_, response) => {
 
 export const getAccessTest = (_, response) => {
     try {
-        const query = "SELECT u.Nome_Usuario, p.Nome, r.Data_Hora_acesso FROM RegistroAcesso r, usuario u, porta p WHERE r.Usuario_ID_Usuario = u.ID_Usuario AND r.Porta_ID_Porta = p.ID_Porta ORDER BY r.ID_RegistroAcesso";
+        const query = "SELECT u.Nome_Usuario, p.Nome, r.Data_Hora_acesso FROM RegistroAcesso r, Usuario u, Porta p WHERE r.Usuario_ID_Usuario = u.ID_Usuario AND r.Porta_ID_Porta = p.ID_Porta ORDER BY r.ID_RegistroAcesso";
 
         database.query(query, (error, data) => {
             if (error) {
@@ -38,7 +38,7 @@ export const getAccessTest = (_, response) => {
 
 export const getAccessLog = (request, response) => {
     try {
-        const query = "SELECT p.Nome, r.Data_Hora_acesso FROM RegistroAcesso r, porta p, usuario u WHERE r.Porta_ID_Porta = p.ID_Porta AND r.Usuario_ID_Usuario = u.ID_Usuario AND u.ID_Usuario = ?";
+        const query = "SELECT p.Nome, r.Data_Hora_acesso FROM RegistroAcesso r, Porta p, Usuario u WHERE r.Porta_ID_Porta = p.ID_Porta AND r.Usuario_ID_Usuario = u.ID_Usuario AND u.ID_Usuario = ?";
         const userID = request.params.userID;
         database.query(query, [userID], (error, data) => {
             if (error) {
