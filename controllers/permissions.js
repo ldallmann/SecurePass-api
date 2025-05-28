@@ -20,7 +20,7 @@ export const getPermissions = (_, response) => {
 
 export const getPermissionsUser = (request, response) => {
     try {
-        const query = "SELECT r.ID_Porta, r.Nome FROM Usuario u, Permissoes p, porta r, Permissoes_has_Porta pr WHERE p.ID_Permissoes = u.Permissoes_ID_Permissoes AND pr.Permissoes_ID_Permissoes = p.ID_Permissoes AND pr.Porta_ID_Porta = r.ID_Porta AND u.ID_Usuario = ?";
+        const query = "SELECT r.ID_Porta, r.Nome FROM Usuario u, Permissoes p, Porta r, Permissoes_has_Porta pr WHERE p.ID_Permissoes = u.Permissoes_ID_Permissoes AND pr.Permissoes_ID_Permissoes = p.ID_Permissoes AND pr.Porta_ID_Porta = r.ID_Porta AND u.ID_Usuario = ?";
 
         const userID = request.params.userID;
 
