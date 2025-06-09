@@ -56,6 +56,9 @@ export const getAccessLog = (request, response) => {
 
 export const addAccess = (request, response) => {
     try {
+
+        console.log("1");
+        
         const usuarioId = request.body.Usuario_ID_Usuario;
         const portaId = request.body.Porta_ID_Porta;
 
@@ -73,7 +76,7 @@ export const addAccess = (request, response) => {
                 }
 
                 const permissao = userPerm[0].Permissoes_ID_Permissoes;
-
+                console.log("2");
                 database.query(
                     "SELECT * FROM Permissoes_has_Porta WHERE Permissoes_ID_Permissoes = ? AND Porta_ID_Porta = ?",
                     [permissao, portaId],
@@ -82,9 +85,9 @@ export const addAccess = (request, response) => {
                             console.error("Erro ao verificar permissão de porta:", err);
                             return response.status(500).json({ error: "Erro ao verificar permissão." });
                         }
-
+                        console.log("Valores para inserção:", values);
                         const statusAcesso = permPorta.length > 0 ? "Permitido" : "Negado";
-
+                        console.log("3");
                         const query = "INSERT INTO RegistroAcesso (`Codigo_Chave`, `Data_Hora_acesso`, `Usuario_ID_Usuario`, `Porta_ID_Porta`, `Status_Acesso`) VALUES (?)";
                         const values = [
                             request.body.Codigo_Chave,
@@ -94,9 +97,11 @@ export const addAccess = (request, response) => {
                             statusAcesso
                         ];
 
+                        console.log("Valores para inserção:", values);
+
                         database.query(query, [values], (err) => {
                             if (err) {
-                                console.error("Erro ao adicionar registro de acesso:", err);
+                                console.error("Erro ao adicionar registro de acesso:", err.sqlMessage || err);
                                 return response.status(500).json({ error: "Erro ao adicionar registro de acesso." });
                             }
 
