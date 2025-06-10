@@ -111,21 +111,26 @@ export const updateUser = (request, response) => {
 };
 
 export const deleteUser = (request, response) => {
-    try {
-        const query = "DELETE FROM Usuario WHERE `ID_Usuario` = ?";
+    const userId = request.params.userID;
 
-        database.query(query, [request.params.userID], (error) => {
+    const deleteAccessQuery = "DELETE FROM RegistroAcesso WHERE Usuario_ID_Usuario = ?";
+    const deleteUserQuery = "DELETE FROM Usuario WHERE ID_Usuario = ?";
+
+    database.query(deleteAccessQuery, [userId], (error) => {
+        if (error) {
+            console.error(`Erro ao deletar acessos do usuário com ID ${userId}:`, error);
+            return response.status(500).json({ error: "Erro ao deletar acessos do usuário." });
+        }
+
+        database.query(deleteUserQuery, [userId], (error) => {
             if (error) {
-                console.error(`Erro ao deletar usuário com ID ${request.params.userID}:`, error);
+                console.error(`Erro ao deletar usuário com ID ${userId}:`, error);
                 return response.status(500).json({ error: "Erro ao deletar usuário." });
             }
 
             return response.status(200).json("Usuário deletado com sucesso.");
         });
-    } catch (error) {
-        console.error("Erro ao deletar usuário:", error);
-        response.status(500).json({ error: "Erro ao deletar usuário." });
-    }
+    });
 };
 
 export const registerUser = (request, response) => {
